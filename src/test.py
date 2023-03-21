@@ -16,7 +16,6 @@ ALGOLIA_APP_ID = getenv('ALGOLIA_APP_ID')
 ALGOLIA_API_KEY = getenv('ALGOLIA_API_KEY')
 ALGOLIA_INDEX_NAME = getenv('ALGOLIA_INDEX_NAME')
 
-
 # Create a client
 client = akeneo.Akeneo(AKENEO_HOST, 
                 AKENEO_CLIENT_ID, 
@@ -25,12 +24,13 @@ client = akeneo.Akeneo(AKENEO_HOST,
                 AKENEO_PASSWORD)
 
 # Get a list of products
-product = client.getProductByCode('dedf67a1-2e33-49a0-ad6c-b3bb91049167')
-products = client.getProducts('{"categories":[{"operator":"IN","value":["Place"]}]}')
+#product = client.getProductByCode('dedf67a1-2e33-49a0-ad6c-b3bb91049167')
+products = client.getProducts('{"enabled":[{"operator":"=","value":true}],"family":[{"operator":"IN","value":["Place"]}],"completeness":[{"operator":"=","value":100,"scope":"ecommerce"}]}')
 #product['objectID'] = product['identifier']
-for index, product in enumerate(products):
-    products[index]['objectID'] = product['identifier']
+#for index, product in enumerate(products):
+#    products[index]['objectID'] = product['identifier']
 
+## Mapping
 importProducts = []
 i = 0
 for product in products:
@@ -42,8 +42,19 @@ for product in products:
         importProduct['description'] = product['values']['description'][0]['data']
     if 'disambiguatingDescription' in product['values']:
         importProduct['disambiguatingDescription'] = product['values']['disambiguatingDescription'][0]['data']
-    importProduct['image'] = product['values']['image'][0]['data']
-    print(importProduct)
+    if 'image' in product['values']:
+        importProduct['image'] = product['values']['image'][0]['data']
+    if 'categories' in product:
+        importProduct['categories'] = product['categories']
+    if 'family' in product:
+        importProduct['family'] = product['family']
+    if 'groups' in product:
+        importProduct['groups'] = product['groups']
+    if 'latitude' in product['values']:
+        importProduct['_geoloc']['lat'] = product['values']['latitude'][0]['data']
+    if 'longitude' in product['values']:
+        importProduct['_geoloc']['lng'] = product['values']['longitude'][0]['data']
+    #print(importProduct)
     importProducts.append(importProduct)
     i += 1
     
