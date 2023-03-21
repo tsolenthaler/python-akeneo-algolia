@@ -51,9 +51,13 @@ for product in products:
     if 'groups' in product:
         importProduct['groups'] = product['groups']
     if 'latitude' in product['values']:
-        importProduct['_geoloc']['lat'] = product['values']['latitude'][0]['data']
+        latitude = product['values']['latitude'][0]['data']
     if 'longitude' in product['values']:
-        importProduct['_geoloc']['lng'] = product['values']['longitude'][0]['data']
+        longitude = product['values']['longitude'][0]['data']
+        importProduct['_geoloc'] = {
+            "lat": float(latitude),
+            "lng": float(longitude)
+        }
     #print(importProduct)
     importProducts.append(importProduct)
     i += 1
