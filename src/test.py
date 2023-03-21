@@ -1,4 +1,5 @@
 from os import getenv
+import json
 from akeneo import akeneo
 from algoliasearch.search_client import SearchClient
 from algoliasearch.configs import SearchConfig
@@ -29,6 +30,22 @@ products = client.getProducts('{"categories":[{"operator":"IN","value":["Place"]
 #product['objectID'] = product['identifier']
 for index, product in enumerate(products):
     products[index]['objectID'] = product['identifier']
+
+importProducts = []
+i = 0
+for product in products:
+    print(product['identifier'])
+    importProduct = {}
+    importProduct['objectID'] = product['identifier']
+    importProduct['name'] = product['values']['name'][0]['data']
+    if 'description' in product['values']:
+        importProduct['description'] = product['values']['description'][0]['data']
+    if 'disambiguatingDescription' in product['values']:
+        importProduct['disambiguatingDescription'] = product['values']['disambiguatingDescription'][0]['data']
+    importProduct['image'] = product['values']['image'][0]['data']
+    print(importProduct)
+    importProducts.append(importProduct)
+    i += 1
     
 #print(products)
 
@@ -41,11 +58,13 @@ client = SearchClient.create_with_config(config)
 
 # Create a new index and add a record
 index = client.init_index(ALGOLIA_INDEX_NAME)
-#record = {"objectID": 1, "name": "test_record"}
-for product in products:
-    index.save_object(product).wait()
+
+print(importProducts)
+with open('result.json', 'w') as fp:
+    json.dump(importProducts, fp)
+
 #index.save_object(product).wait()
-#index.save_objects(products)
+index.save_objects(importProducts)
 
 # Search the index and print the results
 #results = index.search("TSO AG")
