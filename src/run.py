@@ -117,6 +117,9 @@ def savetoFile(products):
 
 def __main__():
     print("Start Import to Algolia")
+    print(f"Arguments count: {len(sys.argv)}")
+    for i, arg in enumerate(sys.argv):
+        print(f"Argument {i:>6}: {arg}")
     products = getDatafromAkeneo()
     importProducts = transformData(products)
     savetoFile(importProducts)
