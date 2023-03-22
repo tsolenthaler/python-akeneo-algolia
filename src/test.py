@@ -84,10 +84,8 @@ index.set_settings({
         'desc(popularity)'
     ],
     'attributesForFaceting': [
-        'searchable(brand)',
         'type',
         'categories',
-        'price'
     ]
 })
 
