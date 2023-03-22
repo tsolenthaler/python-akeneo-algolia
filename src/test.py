@@ -58,6 +58,22 @@ for product in products:
             "lat": float(latitude),
             "lng": float(longitude)
         }
+    if 'addressLocality' in product['values']:
+        importProduct['city'] = product['values']['addressLocality'][0]['data']
+    if 'addressCountry' in product['values']:
+        importProduct['country'] = product['values']['addressCountry'][0]['data']
+    if 'season' in product['values']:
+        importProduct['season'] = product['values']['season'][0]['data']
+    if 'duration' in product['values']:
+        importProduct['duration'] = product['values']['duration'][0]['data']
+    if 'priceRange' in product['values']:
+        importProduct['priceRange'] = product['values']['priceRange'][0]['data']
+    if 'indoor_outdoor' in product['values']:
+        importProduct['indoor_outdoor'] = product['values']['indoor_outdoor'][0]['data']
+    if 'ost_suitable_for' in product['values']:
+        importProduct['ost_suitable_for'] = product['values']['ost_suitable_for'][0]['data']
+    if 'ost_claim' in product['values']:
+        importProduct['ost_claim'] = product['values']['ost_claim'][0]['data']
     #print(importProduct)
     importProducts.append(importProduct)
     i += 1
@@ -85,7 +101,17 @@ index.set_settings({
     ],
     'attributesForFaceting': [
         'type',
-        'categories',
+        'searchable(categories)',
+        'groups',
+        'city',
+        'country',
+        'season',
+        'duration.amount',
+        'duration.unit'
+        'priceRange',
+        'indoor_outdoor',
+        'ost_suitable_for',
+        'ost_claim'
     ]
 })
 
