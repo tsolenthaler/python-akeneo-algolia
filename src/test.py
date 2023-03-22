@@ -47,7 +47,7 @@ for product in products:
     if 'categories' in product:
         importProduct['categories'] = product['categories']
     if 'family' in product:
-        importProduct['family'] = product['family']
+        importProduct['type'] = product['family']
     if 'groups' in product:
         importProduct['groups'] = product['groups']
     if 'latitude' in product['values']:
@@ -73,6 +73,23 @@ client = SearchClient.create_with_config(config)
 
 # Create a new index and add a record
 index = client.init_index(ALGOLIA_INDEX_NAME)
+
+index.set_settings({
+    'searchableAttributes': [
+        'name',
+        'categories',
+        'unordered(description)'
+    ],
+    'customRanking': [
+        'desc(popularity)'
+    ],
+    'attributesForFaceting': [
+        'searchable(brand)',
+        'type',
+        'categories',
+        'price'
+    ]
+})
 
 print(importProducts)
 with open('result.json', 'w') as fp:
