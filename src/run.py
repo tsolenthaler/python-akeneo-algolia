@@ -23,7 +23,7 @@ def getDatafromAkeneo():
     products = client.getProducts('{"enabled":[{"operator":"=","value":true}],"family":[{"operator":"IN","value":["Place"]}],"completeness":[{"operator":"=","value":100,"scope":"ecommerce"}]}')
     return products
 
-## Mapping / Transform Data
+## Mapping / Transform Data / test
 def transformData(products):
     importProducts = []
     i = 0
