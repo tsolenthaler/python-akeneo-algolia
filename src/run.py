@@ -68,6 +68,8 @@ def transformData(products):
             importProduct['ost_suitable_for'] = product['values']['ost_suitable_for'][0]['data']
         if 'ost_claim' in product['values']:
             importProduct['ost_claim'] = product['values']['ost_claim'][0]['data']
+        if 'url' in product['values']:
+            importProduct['url'] = product['values']['url'][0]['data']
         importProducts.append(importProduct)
         i += 1
     return importProducts
